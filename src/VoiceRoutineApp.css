@@ -1,0 +1,160 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #0f0f0f, #1a1a1a);
+  color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.app-inner {
+  max-width: 700px;
+  width: 100%;
+}
+
+.title {
+  font-size: 2.5rem;
+  text-align: center;
+  background: linear-gradient(to right, #a78bfa, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: rgba(25, 25, 25, 0.8);
+  border: 1px solid #2e2e2e;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.exercise-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.step-count {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.benefit-text {
+  font-style: italic;
+  color: #bbb;
+  margin: 0.5rem 0;
+}
+
+.progress-bar-container {
+  background: #333;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 1rem 0;
+}
+
+.progress-bar-fill {
+  background: linear-gradient(to right, #8b5cf6, #3b82f6);
+  height: 100%;
+}
+
+.timer-display {
+  font-size: 3rem;
+  font-family: monospace;
+  text-align: center;
+  color: #d8b4fe;
+  margin: 1rem 0;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.btn.default {
+  background: linear-gradient(to right, #7c3aed, #3b82f6);
+  color: white;
+}
+
+.btn.outline {
+  background: transparent;
+  border: 1px solid #666;
+  color: #ccc;
+}
+
+.btn.destructive {
+  background: rgba(127, 29, 29, 0.5);
+  color: #f87171;
+}
+
+.btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.completion-text {
+  text-align: center;
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.completion-text .green {
+  color: #34d399;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.coming-soon {
+  margin-top: 2rem;
+  color: #ccc;
+}
+
+.coming-soon h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.coming-soon ul {
+  list-style: disc;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+}

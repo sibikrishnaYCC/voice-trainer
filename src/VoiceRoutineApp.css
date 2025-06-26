@@ -1,160 +1,292 @@
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
+/* root palette (optional) */
+:root {
+  --purple-600: #7c3aed;
+  --blue-600:   #2563eb;
+  --purple-500: #a855f7;
+  --blue-500:   #3b82f6;
+  --green-500:  #10b981;
+  --teal-500:   #22d3ee;
+  --gray-900:   #111111;
+  --gray-800:   #2d2d2d;
+  --gray-700:   #3f3f3f;
+  --gray-600:   #4b5563;
+  --gray-300:   #d1d5db;
 }
 
+/* layout -------------------------------------------------------------- */
 .app-container {
   min-height: 100vh;
   background: linear-gradient(to bottom right, #0f0f0f, #1a1a1a);
-  color: #e0e0e0;
+  color: var(--gray-300);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 1rem;
+  font-family: system-ui, sans-serif;
 }
 
-.app-inner {
-  max-width: 700px;
+.content {
+  max-width: 48rem;   /* ~768 px */
   width: 100%;
 }
 
+/* text & titles ------------------------------------------------------- */
 .title {
-  font-size: 2.5rem;
+  font-size: 2.25rem;
+  font-weight: 700;
   text-align: center;
-  background: linear-gradient(to right, #a78bfa, #60a5fa);
+  margin-bottom: 2rem;
+}
+.gradient-text {
+  background: linear-gradient(to right, var(--purple-500), var(--blue-500));
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* card + inner bits --------------------------------------------------- */
+.exercise-card,
+.roadmap {
+  background: var(--gray-900);
+  border: 1px solid var(--gray-800);
+  border-radius: 1rem;
+  padding: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
-.card {
-  background: rgba(25, 25, 25, 0.8);
-  border: 1px solid #2e2e2e;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-}
-
-.card-content {
-  padding: 1.5rem;
+.exercise-card.break-mode {
+  background: linear-gradient(135deg, #111827, #1a2e4d);
+  border-color: #1e3a8a;
 }
 
 .exercise-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.2rem;
-  font-weight: 600;
+  margin-bottom: 1rem;
 }
 
 .exercise-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.step-info {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
 }
 
 .step-count {
-  font-size: 0.9rem;
-  color: #888;
+  font-size: 0.875rem;
+  background: #1a1a1a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
 }
 
-.benefit-text {
+.benefit {
   font-style: italic;
-  color: #bbb;
-  margin: 0.5rem 0;
+  color: var(--gray-600);
+  margin-bottom: 1.5rem;
 }
 
-.progress-bar-container {
-  background: #333;
-  height: 8px;
-  border-radius: 4px;
+/* rep counter */
+.rep-counter {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  background: linear-gradient(to right, var(--purple-600), var(--blue-600));
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+}
+.rep-label {
+  opacity: 0.8;
+}
+.rep-value {
+  font-weight: 700;
+}
+
+/* progress bar -------------------------------------------------------- */
+.progress-bar {
+  position: relative;
+  height: 0.5rem;
+  background: var(--gray-800);
+  border-radius: 9999px;
   overflow: hidden;
-  margin: 1rem 0;
 }
-
-.progress-bar-fill {
-  background: linear-gradient(to right, #8b5cf6, #3b82f6);
+.progress-bar-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
 }
 
-.timer-display {
+.progress-container {
+  margin-bottom: 1.5rem;
+}
+.time-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--gray-600);
+  margin-top: 0.25rem;
+}
+
+/* timer --------------------------------------------------------------- */
+.timer {
   font-size: 3rem;
   font-family: monospace;
   text-align: center;
-  color: #d8b4fe;
-  margin: 1rem 0;
+  margin: 2rem 0;
+  color: #7dd3fc;
 }
 
-.button-group {
+/* break styles */
+.break-content {
+  text-align: center;
+  padding: 1rem 0;
+}
+.break-timer-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
   justify-content: center;
+  margin: 2rem 0;
 }
-
-.btn {
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 0.9rem;
+.break-circle {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #0f172a, #1e3a8a);
   display: flex;
   align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(34, 211, 238, 0.2);
+}
+.break-timer {
+  color: #22d3ee;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+.break-tip {
+  font-size: 0.9rem;
+  color: #93c5fd;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+/* buttons ------------------------------------------------------------- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 0.5rem;
+  padding: 0.75rem 1rem;
   border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
 }
+.btn .icon { width: 1rem; height: 1rem; }
 
-.btn .icon {
-  width: 18px;
-  height: 18px;
+.btn-primary {
+  background: linear-gradient(to right, var(--purple-600), var(--blue-600));
+  color: #fff;
 }
+.btn-primary:hover { opacity: 0.9; }
 
-.btn.default {
-  background: linear-gradient(to right, #7c3aed, #3b82f6);
-  color: white;
+.btn-secondary {
+  background: var(--gray-800);
+  color: var(--gray-300);
 }
-
-.btn.outline {
-  background: transparent;
-  border: 1px solid #666;
-  color: #ccc;
-}
-
-.btn.destructive {
-  background: rgba(127, 29, 29, 0.5);
-  color: #f87171;
-}
-
-.btn.disabled {
-  opacity: 0.5;
+.btn-secondary:hover { background: var(--gray-700); }
+.btn-secondary:disabled {
+  background: #1f1f1f;
+  color: var(--gray-600);
   cursor: not-allowed;
 }
 
-.completion-text {
-  text-align: center;
-  color: #aaa;
-  font-size: 0.9rem;
-  margin-top: 1rem;
+.btn-ghost {
+  background: transparent;
+  color: var(--gray-300);
+}
+.btn-ghost:hover { color: #fff; }
+.btn-ghost:disabled { color: var(--gray-600); cursor: not-allowed; }
+
+/* controls grid ------------------------------------------------------- */
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
 }
 
-.completion-text .green {
-  color: #34d399;
-  margin-right: 4px;
-  vertical-align: middle;
+/* routine completion -------------------------------------------------- */
+.routine-completion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  margin-bottom: 2rem;
+  position: relative;
+}
+.completion-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  background: #22c55e;
+}
+.time-saved {
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--green-500);
+}
+.time-saved .icon {
+  width: 0.9rem;
+  height: 0.9rem;
 }
 
-.coming-soon {
-  margin-top: 2rem;
-  color: #ccc;
+/* roadmap ------------------------------------------------------------- */
+.roadmap-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
-
-.coming-soon h2 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+.roadmap-title {
+  font-size: 1rem;
+  font-weight: 600;
 }
+.icon-box {
+  background: var(--gray-800);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gradient-bg { background: linear-gradient(to right, var(--purple-500), var(--blue-500)); }
+.icon { width: 1.25rem; height: 1.25rem; color: var(--blue-500); }
+.icon.white { color: #ffffff; }
 
-.coming-soon ul {
-  list-style: disc;
-  padding-left: 1.2rem;
-  font-size: 0.9rem;
+.roadmap-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.roadmap-list li {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  font-size: 0.875rem;
 }

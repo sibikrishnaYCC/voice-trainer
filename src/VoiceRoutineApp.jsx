@@ -12,85 +12,130 @@ import "./VoiceRoutineApp.css";
 const EXERCISES = [
   {
     id: 1,
-    name: "Belly Breathing with “Ssss” Sound",
-    duration: 180, // Reduced from 600 to 180 (3 minutes)
-    benefit: "Trains proper breath support, control, and calmness.",
+    name: "Belly Breathing",
+    duration: 180,
+    benefit: "Trains proper breath support and control",
     reps: 5,
-    repDuration: 36, // 180s total / 5 reps
+    repDuration: 36,
     breakAfter: 15,
+    icon: "🌬️",
+    description: "Focus on deep diaphragmatic breathing to strengthen core support for your voice."
   },
   {
     id: 2,
-    name: "Jaw & Neck Relaxation",
+    name: "Jaw Relaxation",
     duration: 180,
-    benefit: "Removes throat tension for a fuller, deeper voice.",
+    benefit: "Removes throat tension for deeper voice",
     reps: 4,
     repDuration: 45,
     breakAfter: 15,
+    icon: "💆",
+    description: "Gentle massage and stretching techniques to release jaw tension."
   },
   {
     id: 3,
-    name: 'Lip Trills ("Brrr…")',
+    name: "Lip Trills",
     duration: 180,
-    benefit: "Loosens vocal cords, builds smooth pitch control.",
+    benefit: "Loosens vocal cords, builds pitch control",
     reps: 6,
     repDuration: 30,
     breakAfter: 15,
+    icon: "👄",
+    description: "Vibrate lips while exhaling to warm up vocal cords and improve resonance."
   },
   {
     id: 4,
-    name: 'Humming ("Mmm…")',
+    name: "Humming",
     duration: 180,
-    benefit: "Activates chest resonance, adds richness.",
+    benefit: "Activates chest resonance",
     reps: 5,
     repDuration: 36,
     breakAfter: 15,
+    icon: "🎶",
+    description: "Sustain gentle hums at different pitches to develop chest resonance."
   },
-  { 
-    id: 5, 
-    name: "Sirens (Pitch Glide)", 
-    duration: 180, 
-    benefit: "Expands range, improves vocal flexibility.",
+  {
+    id: 5,
+    name: "Sirens",
+    duration: 180,
+    benefit: "Expands vocal range and flexibility",
     reps: 4,
     repDuration: 45,
     breakAfter: 15,
+    icon: "📈",
+    description: "Glide smoothly from your lowest to highest pitch to expand vocal range."
   },
-  { 
-    id: 6, 
-    name: "Chest Resonance Drill", 
-    duration: 180, 
-    benefit: "Trains grounded, deep, manly tone.",
+  {
+    id: 6,
+    name: "Chest Resonance",
+    duration: 180,
+    benefit: "Trains grounded, deep tone",
     reps: 5,
     repDuration: 36,
     breakAfter: 15,
+    icon: "🎤",
+    description: "Practice speaking with chest vibrations to develop a rich, deep tone."
   },
-  { 
-    id: 7, 
-    name: 'Yawn-Sigh ("Haaah")', 
-    duration: 180, 
-    benefit: "Opens the throat for a relaxed deep sound.",
+  {
+    id: 7,
+    name: "Yawn-Sigh",
+    duration: 180,
+    benefit: "Opens throat for relaxed sound",
     reps: 4,
     repDuration: 45,
     breakAfter: 15,
+    icon: "😌",
+    description: "Imitate a yawn followed by a sigh to release tension and open the throat."
   },
-  { 
-    id: 8, 
-    name: "Low Humming", 
-    duration: 180, 
-    benefit: "Calms cords and reinforces muscle memory.",
+  {
+    id: 8,
+    name: "Low Humming",
+    duration: 180,
+    benefit: "Calms cords and builds memory",
     reps: 5,
     repDuration: 36,
     breakAfter: 15,
+    icon: "🔊",
+    description: "Sustain low-pitched hums to strengthen vocal cord closure and resonance."
   },
-  { 
-    id: 9, 
-    name: "Silent Stretch & Breath", 
-    duration: 180, 
-    benefit: "Relaxes body and prevents tightness.",
+  {
+    id: 9,
+    name: "Silent Stretch",
+    duration: 180,
+    benefit: "Relaxes body and prevents tightness",
     reps: 1,
     repDuration: 180,
     breakAfter: 0,
+    icon: "🧘",
+    description: "Gentle stretches and breathing exercises to release tension in the body."
   },
+];
+
+const ROADMAP_EXERCISES = [
+  {
+    id: 10,
+    name: "Resonance Boost",
+    description: "Advanced exercises to amplify vocal resonance.",
+    icon: "📢"
+  },
+  {
+    id: 11,
+    name: "Pitch Control Drills",
+    description: "Targeted drills to refine and expand your vocal pitch range.",
+    icon: "🎼"
+  },
+  {
+    id: 12,
+    name: "Breath Capacity Training",
+    description: "Techniques to increase lung capacity for sustained vocalization.",
+    icon: "💨"
+  },
+  {
+    id: 13,
+    name: "Vocal Stamina Workout",
+    description: "Build endurance for long speaking or singing sessions.",
+    icon: "🔋"
+  }
 ];
 
 /* ---------------------------------------------------------------- helpers */
@@ -99,32 +144,90 @@ const formatTime = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0
 /* --------------------------------------------------------------- ui bits */
 const Button = ({ icon, variant = "secondary", className = "", children, ...rest }) => {
   const base = "btn";
-  const variants = { primary: "btn-primary", secondary: "btn-secondary", ghost: "btn-ghost" };
+  const variants = {
+    primary: "btn-primary",
+    secondary: "btn-secondary",
+    ghost: "btn-ghost",
+    rep: "btn-rep"
+  };
   return (
     <button className={`${base} ${variants[variant]} ${className}`} {...rest}>
-      {icon}
+      {icon && <span className="icon">{icon}</span>}
       {children}
     </button>
   );
 };
 
-const ProgressBar = ({ value, color = "linear-gradient(to right, var(--purple-500), var(--blue-500))" }) => (
-  <div className="progress-bar">
-    <motion.div
-      className="progress-bar-inner"
-      animate={{ width: `${value}%` }}
-      style={{ background: color }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
+const ProgressBar = ({ value, variant = "primary" }) => {
+  const colors = {
+    primary: "linear-gradient(to right, var(--purple-500), var(--blue-500))",
+    secondary: "linear-gradient(to right, var(--purple-500), var(--teal-500))",
+  };
+  return (
+    <div className="progress-bar">
+      <motion.div
+        className="progress-bar-inner"
+        animate={{ width: `${value}%` }}
+        style={{ background: colors[variant] }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      />
+    </div>
+  );
+};
+
+const RepCounter = ({ currentRep, totalReps, onPrev, onNext, disabled }) => (
+  <div className="rep-counter">
+    <Button
+      variant="rep"
+      onClick={onPrev}
+      disabled={disabled || currentRep === 1}
+      className="rep-nav-btn"
+      icon={
+        <svg viewBox="0 0 20 20" fill="currentColor" className="icon">
+          <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" />
+        </svg>
+      }
+    />
+
+    <div className="rep-info">
+      <span className="rep-label">Rep</span>
+      <span className="rep-value">{currentRep}/{totalReps}</span>
+    </div>
+
+    <Button
+      variant="rep"
+      onClick={onNext}
+      disabled={disabled || currentRep === totalReps}
+      className="rep-nav-btn"
+      icon={
+        <svg viewBox="0 0 20 20" fill="currentColor" className="icon">
+          <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" />
+        </svg>
+      }
     />
   </div>
 );
 
-const RepCounter = ({ currentRep, totalReps }) => (
-  <div className="rep-counter">
-    <span className="rep-label">Rep</span>
-    <span className="rep-value">{currentRep}/{totalReps}</span>
-  </div>
-);
+const ExerciseCard = ({ exercise, isActive, onClick }) => {
+  return (
+    <motion.div
+      className={`exercise-card ${isActive ? 'active' : ''}`}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onClick}
+    >
+      <div className="exercise-card-icon">{exercise.icon}</div>
+      <div className="exercise-card-content">
+        <h3 className="exercise-card-title">{exercise.name}</h3>
+        <p className="exercise-card-benefit">{exercise.benefit}</p>
+        <div className="exercise-card-meta">
+          <span className="exercise-card-reps">{exercise.reps} reps × {exercise.repDuration}s</span>
+          <span className="exercise-card-duration">{formatTime(exercise.duration)}</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 /* ------------------------------------------------------------ component */
 const VoiceRoutineApp = () => {
@@ -133,6 +236,7 @@ const VoiceRoutineApp = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [currentRep, setCurrentRep] = useState(1);
   const [isBreak, setIsBreak] = useState(false);
+  const [showRoutine, setShowRoutine] = useState(true);
   const timerRef = useRef(null);
   const audioRef = useRef(null);
 
@@ -141,9 +245,9 @@ const VoiceRoutineApp = () => {
     if (audioRef.current) {
       audioRef.current.pause();
     }
-    
-    const audio = new Audio(type === 'start' 
-      ? 'https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3' 
+
+    const audio = new Audio(type === 'start'
+      ? 'https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3'
       : 'https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3'
     );
     audioRef.current = audio;
@@ -152,8 +256,11 @@ const VoiceRoutineApp = () => {
 
   /* timer effect */
   useEffect(() => {
-    if (!isRunning) return;
-    
+    if (!isRunning) {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      return;
+    }
+
     if (timeLeft > 0) {
       timerRef.current = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
     } else {
@@ -161,9 +268,9 @@ const VoiceRoutineApp = () => {
       if (!isBreak && currentRep < EXERCISES[step].reps) {
         // Start break between reps
         setIsBreak(true);
-        setTimeLeft(15); // 15-second break
+        setTimeLeft(EXERCISES[step].breakAfter || 15); // Use defined breakAfter or default to 15
         playSound('complete');
-      } 
+      }
       // Handle break completion
       else if (isBreak) {
         // Move to next rep
@@ -171,7 +278,7 @@ const VoiceRoutineApp = () => {
         setCurrentRep((rep) => rep + 1);
         setTimeLeft(EXERCISES[step].repDuration);
         playSound('start');
-      } 
+      }
       // Handle exercise completion
       else {
         // Start break after exercise
@@ -179,7 +286,7 @@ const VoiceRoutineApp = () => {
           setIsBreak(true);
           setTimeLeft(EXERCISES[step].breakAfter);
           playSound('complete');
-        } 
+        }
         // Move to next exercise
         else {
           if (step < EXERCISES.length - 1) {
@@ -189,27 +296,30 @@ const VoiceRoutineApp = () => {
             setIsBreak(false);
             playSound('start');
           } else {
+            // Routine finished
             setIsRunning(false);
+            setIsBreak(false); // Ensure break state is reset
+            playSound('complete'); // Final completion sound
           }
         }
       }
     }
-    
+
     return () => timerRef.current && clearTimeout(timerRef.current);
-  }, [isRunning, step, timeLeft, currentRep, isBreak]);
+  }, [isRunning, step, timeLeft, currentRep, isBreak, EXERCISES]);
 
   /* derived */
   const current = EXERCISES[step];
   const progress = useMemo(() => {
-    const total = isBreak 
-      ? (current.breakAfter || 15) 
+    const total = isBreak
+      ? (current.breakAfter || 15)
       : current.repDuration;
     return ((total - timeLeft) / total) * 100;
   }, [current, timeLeft, isBreak]);
 
-  const routineCompletion = useMemo(() => 
-    Math.floor(((step + (currentRep / current.reps)) / EXERCISES.length) * 100), 
-    [step, currentRep, current.reps]
+  const routineCompletion = useMemo(() =>
+    Math.floor(((step + (currentRep / current.reps)) / EXERCISES.length) * 100),
+    [step, currentRep, current.reps, EXERCISES.length]
   );
 
   /* handlers */
@@ -224,6 +334,7 @@ const VoiceRoutineApp = () => {
     setCurrentRep(1);
     setTimeLeft(EXERCISES[0].repDuration);
     setIsBreak(false);
+    if (timerRef.current) clearTimeout(timerRef.current);
   }, []);
 
   const goToStep = useCallback((n) => {
@@ -235,203 +346,207 @@ const VoiceRoutineApp = () => {
     setIsRunning(false);
   }, []);
 
+  const goToPrevRep = useCallback(() => {
+    if (currentRep > 1 && !isRunning) {
+      setCurrentRep(prev => prev - 1);
+      setTimeLeft(current.repDuration);
+    }
+  }, [currentRep, current.repDuration, isRunning]);
+
+  const goToNextRep = useCallback(() => {
+    if (currentRep < current.reps && !isRunning) {
+      setCurrentRep(prev => prev + 1);
+      setTimeLeft(current.repDuration);
+    }
+  }, [currentRep, current.reps, current.repDuration, isRunning]);
+
+  const toggleRoutineView = () => {
+    setShowRoutine(!showRoutine);
+  };
+
   /* render */
   return (
     <div className="app-container">
       <div className="content">
-        {/* title */}
-        <motion.h1
-          className="title gradient-text"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          🎙️ Deep Voice Trainer
-        </motion.h1>
-
-        {/* exercise card */}
-        <motion.section
-          className={`exercise-card ${isBreak ? 'break-mode' : ''}`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <header className="exercise-header">
-            <h2 className="exercise-title">
-              <span className="icon-box">
-                {isBreak ? (
-                  <svg viewBox="0 0 20 20" fill="currentColor" className="icon">
-                    <path d="M17.294 7.291a1 1 0 011.412 1.416l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L10 14.586l7.294-7.293z" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 20 20" fill="currentColor" className="icon">
-                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
-                  </svg>
-                )}
-              </span>
-              {isBreak ? "Break Time" : current.name}
-            </h2>
-            <div className="step-info">
-              <span className="step-count">
-                {step + 1}/{EXERCISES.length}
-              </span>
-              {!isBreak && current.reps > 1 && (
-                <RepCounter currentRep={currentRep} totalReps={current.reps} />
-              )}
-            </div>
-          </header>
-
-          {isBreak ? (
-            <div className="break-content">
-              <p className="benefit">Rest your voice before the next {currentRep < current.reps ? "rep" : "exercise"}</p>
-              <div className="break-timer-container">
-                <motion.div 
-                  className="break-circle"
-                  animate={{ scale: [0.8, 1, 0.8] }}
-                  transition={{ 
-                    duration: 2, 
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <motion.p
-                    key={timeLeft}
-                    className="timer break-timer"
-                    initial={{ scale: 0.9 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {formatTime(timeLeft)}
-                  </motion.p>
-                </motion.div>
-              </div>
-              <p className="break-tip">
-                Tip: {currentRep < current.reps 
-                  ? "Relax your jaw and neck muscles" 
-                  : "Take deep breaths and stay hydrated"}
-              </p>
-            </div>
-          ) : (
-            <>
-              <p className="benefit">{current.benefit}</p>
-              <div className="progress-container">
-                <ProgressBar 
-                  value={progress} 
-                  color={isBreak 
-                    ? "linear-gradient(to right, #10b981, #22d3ee)" 
-                    : "linear-gradient(to right, var(--purple-500), var(--blue-500))"}
-                />
-                <div className="time-info">
-                  <span>0:00</span>
-                  <span>{formatTime(current.repDuration)}</span>
-                </div>
-              </div>
-              <motion.p
-                key={timeLeft}
-                className="timer"
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.2 }}
-              >
-                {formatTime(timeLeft)}
-              </motion.p>
-            </>
-          )}
-
-          {/* controls */}
-          <div className="controls-grid">
-            <Button
-              onClick={() => goToStep(step - 1)}
-              disabled={step === 0}
-              icon={
-                <svg viewBox="0 0 20 20" fill="currentColor" className="icon">
-                  <path d="M9.707 16.707a1 1 0 01-1.414 0l-6-6 6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" />
-                </svg>
-              }
-            >
-              Previous
-            </Button>
-
-            <Button
-              onClick={startPause}
-              variant={isBreak ? "secondary" : "primary"}
-              icon={
-                isRunning ? (
-                  <svg viewBox="0 0 20 20" fill="currentColor" className="icon">
-                    <path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8h2v4H7zm4 0h2v4h-2z" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 20 20" fill="currentColor" className="icon">
-                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.12-9.168A1 1 0 008 10v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
-                  </svg>
-                )
-              }
-            >
-              {isRunning ? "Pause" : "Start"}
-            </Button>
-
-            <Button
-              onClick={() => goToStep(step + 1)}
-              disabled={step === EXERCISES.length - 1}
-              icon={
-                <svg viewBox="0 0 20 20" fill="currentColor" className="icon">
-                  <path d="M10.293 3.293a1 1 0 011.414 0l6 6-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" />
-                </svg>
-              }
-            >
-              Next
-            </Button>
-
-            <Button
-              onClick={reset}
-              icon={
-                <svg viewBox="0 0 20 20" fill="currentColor" className="icon">
-                  <path d="M4 2a1 1 0 011 1v2.1A7.002 7.002 0 0116.6 7.666a1 1 0 01-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 110 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.1a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" />
-                </svg>
-              }
-            >
-              Reset
-            </Button>
+        {/* Header */}
+        <header className="app-header">
+          <div className="app-title">
+            <h1 className="gradient-text">Deep Voice Trainer</h1>
+            <p className="subtitle">Vocal exercises for resonance and depth</p>
           </div>
-        </motion.section>
+          <div className="progress-display">
+            <span className="completion-percent">{Math.min(100, routineCompletion)}%</span>
+            <div className="progress-bar-container">
+              <ProgressBar
+                value={Math.min(100, routineCompletion)}
+                variant="secondary"
+              />
+            </div>
+          </div>
+        </header>
 
-        {/* routine progress */}
-        <div className="routine-completion">
-          <span className="completion-dot" />
-          {Math.min(100, routineCompletion)}% complete
-          <div className="time-saved">
-            <svg viewBox="0 0 20 20" fill="currentColor" className="icon">
-              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-              <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-            </svg>
-            Time saved: 42 min
+        <div className="main-content">
+          {/* Current exercise */}
+          <motion.section
+            className={`current-exercise ${isBreak ? 'break-mode' : ''}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            key={current.id}
+          >
+            <div className="exercise-header">
+              <div className="exercise-icon">{current.icon}</div>
+              <div className="exercise-info">
+                <h2 className="exercise-title">
+                  {isBreak ? "Break Time" : current.name}
+                </h2>
+                <p className="exercise-description">{current.description}</p>
+              </div>
+            </div>
+
+            {isBreak ? (
+              <div className="break-content">
+                <div className="break-timer-container">
+                  <motion.div
+                    className="break-circle"
+                    animate={{ scale: [0.9, 1, 0.9] }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <motion.p
+                      key={timeLeft}
+                      className="break-timer"
+                      initial={{ scale: 0.9 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {formatTime(timeLeft)}
+                    </motion.p>
+                  </motion.div>
+                </div>
+
+                <p className="break-tip">
+                  {currentRep < current.reps
+                    ? "Focus on relaxing your jaw and neck muscles."
+                    : "Take deep breaths and hydrate."}
+                </p>
+              </div>
+            ) : (
+              <div className="exercise-content">
+                <div className="rep-controls-container">
+                  <RepCounter
+                    currentRep={currentRep}
+                    totalReps={current.reps}
+                    onPrev={goToPrevRep}
+                    onNext={goToNextRep}
+                    disabled={isRunning}
+                  />
+                </div>
+
+                <div className="progress-container">
+                  <ProgressBar
+                    value={progress}
+                    variant="primary"
+                  />
+                  <div className="time-info">
+                    <span>0:00</span>
+                    <span>{formatTime(current.repDuration)}</span>
+                  </div>
+                </div>
+
+                <motion.p
+                  key={timeLeft}
+                  className="timer"
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {formatTime(timeLeft)}
+                </motion.p>
+              </div>
+            )}
+
+            {/* controls */}
+            <div className="controls-grid">
+              <Button
+                onClick={() => goToStep(step - 1)}
+                disabled={step === 0 || isRunning}
+                icon={
+                  <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9.707 16.707a1 1 0 01-1.414 0l-6-6 6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" />
+                  </svg>
+                }
+              >
+                Previous
+              </Button>
+
+              <Button
+                onClick={startPause}
+                variant={isBreak ? "secondary" : "primary"}
+                
+              >
+                {isRunning ? "Pause" : "Start"}
+              </Button>
+
+              <Button
+                onClick={() => goToStep(step + 1)}
+                disabled={step === EXERCISES.length - 1 || isRunning}
+                icon={
+                  <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.293 3.293a1 1 0 011.414 0l6 6-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" />
+                  </svg>
+                }
+              >
+                Next
+              </Button>
+            </div>
+          </motion.section>
+
+          {/* Routine list */}
+          <div className="routine-section">
+            <div className="section-header">
+              <h3>Today's Routine</h3>
+              <button 
+                className="toggle-button"
+                onClick={toggleRoutineView}
+              >
+                {showRoutine ? 'Hide' : 'Show'}
+              </button>
+            </div>
+            
+            {showRoutine && (
+              <div className="exercise-list">
+                {EXERCISES.map((exercise, index) => (
+                  <ExerciseCard
+                    key={exercise.id}
+                    exercise={exercise}
+                    isActive={index === step}
+                    onClick={() => !isRunning && goToStep(index)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* roadmap / coming-soon */}
-        <motion.section
-          className="roadmap"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <header className="roadmap-header">
-            <span className="icon-box gradient-bg">
-              <svg viewBox="0 0 20 20" fill="currentColor" className="icon white">
-                <path d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" />
-              </svg>
-            </span>
-            <h3 className="roadmap-title">Coming Soon</h3>
-          </header>
-
-          <ul className="roadmap-list">
-            <li>📈 Weekly progress graph (voice depth & consistency)</li>
-            <li>🎤 Voice recorder with playback & comparison</li>
-            <li>💡 Daily tips based on progress</li>
-            <li>📅 30-Day Deep Voice Challenge calendar</li>
-            <li>🔔 Smart reminders and motivation quotes</li>
-          </ul>
-        </motion.section>
+        {/* Upcoming features */}
+        <div className="roadmap-section">
+          <h3 className="section-title">Upcoming Features</h3>
+          <div className="roadmap-grid">
+            {ROADMAP_EXERCISES.map((exercise) => (
+              <div key={exercise.id} className="roadmap-card">
+                <div className="roadmap-icon">{exercise.icon}</div>
+                <div className="roadmap-content">
+                  <h4>{exercise.name}</h4>
+                  <p>{exercise.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

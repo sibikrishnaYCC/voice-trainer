@@ -241,7 +241,7 @@ const VoiceRoutineApp = () => {
   const audioRef = useRef(null);
 
   /* Play sound effects */
-  const playSound = (type) => {
+  const playSound = useCallback((type) => {
     if (audioRef.current) {
       audioRef.current.pause();
     }
@@ -252,7 +252,7 @@ const VoiceRoutineApp = () => {
     );
     audioRef.current = audio;
     audio.play();
-  };
+  }, []);
 
   /* timer effect */
   useEffect(() => {
@@ -264,49 +264,67 @@ const VoiceRoutineApp = () => {
     if (timeLeft > 0) {
       timerRef.current = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
     } else {
-      // Handle exercise rep completion
-      if (!isBreak && currentRep < EXERCISES[step].reps) {
-        // Start break between reps
-        setIsBreak(true);
-        setTimeLeft(EXERCISES[step].breakAfter || 15); // Use defined breakAfter or default to 15
-        playSound('complete');
-      }
-      // Handle break completion
-      else if (isBreak) {
-        // Move to next rep
-        setIsBreak(false);
-        setCurrentRep((rep) => rep + 1);
-        setTimeLeft(EXERCISES[step].repDuration);
-        playSound('start');
-      }
-      // Handle exercise completion
-      else {
-        // Start break after exercise
-        if (step < EXERCISES.length - 1 && EXERCISES[step].breakAfter > 0) {
+      const currentExercise = EXERCISES[step];
+      
+      if (!isBreak) {
+        // Rep finished
+        if (currentRep < currentExercise.reps) {
+          // Start break between reps
           setIsBreak(true);
-          setTimeLeft(EXERCISES[step].breakAfter);
+          setTimeLeft(currentExercise.breakAfter || 15);
           playSound('complete');
+        } else {
+          // Last rep finished - start break after exercise
+          if (step < EXERCISES.length - 1 && currentExercise.breakAfter > 0) {
+            setIsBreak(true);
+            setTimeLeft(currentExercise.breakAfter);
+            playSound('complete');
+          } else {
+            // No break after exercise - move to next exercise immediately
+            if (step < EXERCISES.length - 1) {
+              const nextStep = step + 1;
+              setStep(nextStep);
+              setCurrentRep(1);
+              setTimeLeft(EXERCISES[nextStep].repDuration);
+              setIsBreak(false);
+              playSound('start');
+            } else {
+              // Routine finished
+              setIsRunning(false);
+              setIsBreak(false);
+              playSound('complete');
+            }
+          }
         }
-        // Move to next exercise
-        else {
+      } else {
+        // Break finished
+        if (currentRep === currentExercise.reps) {
+          // Break after exercise finished - move to next exercise
           if (step < EXERCISES.length - 1) {
-            setStep((s) => s + 1);
+            const nextStep = step + 1;
+            setStep(nextStep);
             setCurrentRep(1);
-            setTimeLeft(EXERCISES[step + 1].repDuration);
+            setTimeLeft(EXERCISES[nextStep].repDuration);
             setIsBreak(false);
             playSound('start');
           } else {
             // Routine finished
             setIsRunning(false);
-            setIsBreak(false); // Ensure break state is reset
-            playSound('complete'); // Final completion sound
+            setIsBreak(false);
+            playSound('complete');
           }
+        } else {
+          // Break between reps finished - move to next rep
+          setIsBreak(false);
+          setCurrentRep((rep) => rep + 1);
+          setTimeLeft(currentExercise.repDuration);
+          playSound('start');
         }
       }
     }
 
     return () => timerRef.current && clearTimeout(timerRef.current);
-  }, [isRunning, step, timeLeft, currentRep, isBreak, EXERCISES]);
+  }, [isRunning, step, timeLeft, currentRep, isBreak, EXERCISES, playSound]);
 
   /* derived */
   const current = EXERCISES[step];
@@ -326,7 +344,7 @@ const VoiceRoutineApp = () => {
   const startPause = useCallback(() => {
     setIsRunning((r) => !r);
     if (!isRunning) playSound('start');
-  }, [isRunning]);
+  }, [isRunning, playSound]);
 
   const reset = useCallback(() => {
     setIsRunning(false);
